@@ -1,30 +1,29 @@
 ﻿@model SimApp.Models.SimModel
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Editar Sim";
     var edades = ViewData["edades"] as List<string>;
 }
 
-<h1>Edit Sim</h1>
+<h1>Editar Sim</h1>
 <hr />
 <div class="container">
     <div class="row">
-        <div class="col-md-4"></div>
-        <div class="col-md-4">
+        <div class="col-md-7 mx-auto">
             <form asp-action="Edit">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="Id" />
-                <div class="form-group">
-                    <label asp-for="Nombre" class="control-label"></label>
+                <div class="mb-3">
+                    <label asp-for="Nombre" class="form-label"></label>
                     <input asp-for="Nombre" class="form-control" />
                     <span asp-validation-for="Nombre" class="text-danger"></span>
                 </div>
-                <div class="form-group">
-                    <label asp-for="Apellido" class="control-label"></label>
+                <div class="mb-3">
+                    <label asp-for="Apellido" class="form-label"></label>
                     <input asp-for="Apellido" class="form-control" />
                     <span asp-validation-for="Apellido" class="text-danger"></span>
                 </div>
-                <div class="form-group">
-                    <label asp-for="IsMujer" class="control-label"></label>
+                <div class="mb-3">
+                    <label asp-for="IsMujer" class="form-label"></label>
                     <div class="form-check">
                         @Html.RadioButtonFor(m => m.IsMujer,false,new{@class="form-check-input"})
                         <label class="form-check-label">Hombre</label>
@@ -34,12 +33,12 @@
                         <label class="form-check-label">Mujer</label>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label asp-for="Edad" class="control-label"></label>
+                <div class="mb-3">
+                    <label asp-for="Edad" class="form-label"></label>
                     <select asp-items="@(new SelectList(edades))" asp-for="Edad" class="form-select"></select>
                 </div>
 
-                <div class="form-group">
+                <div class="mb-3">
                     <input type="submit" value="Guardar" class="btn btn-primary" />
                 </div>
             </form>
@@ -47,7 +46,6 @@
         <div>
             <a asp-action="Index">Volver a la Lista</a>
         </div>
-        <div class="col-md-4"></div>
     </div>
 
     
