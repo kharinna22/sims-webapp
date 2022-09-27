@@ -153,5 +153,61 @@ namespace SimApp.Controllers
             return View(sim);
         }
 
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+                return NotFound();
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(baseUrl);
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                HttpResponseMessage response = await client.GetAsync("sims/" + id);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = response.Content.ReadAsStringAsync().Result;
+                    var foundedSim = JsonConvert.DeserializeObject<SimModel>(json);
+                    ViewData["edades"] = edades;
+                    return View(foundedSim);
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id, [Bind("Id,Nombre,Apellido,Edad,IsMuerto,IsMujer")] SimModel sim)
+        {
+            if (id != sim.Id)
+                return NotFound();
+
+            if (ModelState.IsValid)
+            {
+
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(baseUrl);
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                    HttpResponseMessage response = await client.DeleteAsync("sims/"+id);
+
+                    if (response.IsSuccessStatusCode)
+                        return RedirectToAction(nameof(Index));
+                    else
+                        return NotFound();
+                }
+            }
+
+            return View(sim);
+        }
+
+
     }
 }
