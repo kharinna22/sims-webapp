@@ -46,12 +46,48 @@ namespace SimApp.Controllers
                     }
                 }
             }
-            ViewData["SimsList"] = simsList;
-
+            
             return View(simsList);
         }
 
-        // GET: Sims/Edit/{id}
+        public IActionResult Create()
+        {
+            SimRequestModel newSim = new SimRequestModel();
+            // Valores predeterminados (bias propio)
+            newSim.IsMujer = true;
+            newSim.Edad = "Joven";
+            newSim.IsMuerto = false;
+            ViewData["edades"] = edades;
+            return View(newSim);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("Nombre,Apellido,Edad,IsMuerto,IsMujer")] SimRequestModel newSim)
+        {
+            
+            if (ModelState.IsValid)
+            {
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(baseUrl);
+                    client.DefaultRequestHeaders.Accept.Clear();
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                    var createSim = new StringContent(JsonConvert.SerializeObject(newSim), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await client.PostAsync("Sim",createSim);
+
+                    if (response.IsSuccessStatusCode)
+                        return RedirectToAction(nameof(Index));
+                    else
+                        return NotFound();
+                }
+            }
+
+            return View(newSim);
+        }
+
+        // GET: Sim/Edit/{id}
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
