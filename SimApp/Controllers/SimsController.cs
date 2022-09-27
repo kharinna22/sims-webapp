@@ -31,7 +31,7 @@ namespace SimApp.Controllers
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                HttpResponseMessage response = await client.GetAsync("Sim");
+                HttpResponseMessage response = await client.GetAsync("Sims");
 
 
                 if (response.IsSuccessStatusCode)
@@ -75,7 +75,7 @@ namespace SimApp.Controllers
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
                     var createSim = new StringContent(JsonConvert.SerializeObject(newSim), Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = await client.PostAsync("Sim",createSim);
+                    HttpResponseMessage response = await client.PostAsync("Sims",createSim);
 
                     if (response.IsSuccessStatusCode)
                         return RedirectToAction(nameof(Index));
@@ -99,7 +99,7 @@ namespace SimApp.Controllers
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                HttpResponseMessage response = await client.GetAsync("Sim/"+id);
+                HttpResponseMessage response = await client.GetAsync("Sims/"+id);
                 
 
                 if (response.IsSuccessStatusCode)
@@ -141,7 +141,7 @@ namespace SimApp.Controllers
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
                     var updateSim = new StringContent(JsonConvert.SerializeObject(request),Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = await client.PutAsync("Sim/"+id, updateSim);
+                    HttpResponseMessage response = await client.PutAsync("Sims/"+id, updateSim);
 
                     if (response.IsSuccessStatusCode)
                         return RedirectToAction(nameof(Index));
