@@ -1,6 +1,62 @@
-﻿@{
+﻿@using SimApp.Controllers
+@model IEnumerable<SimApp.Models.SimModel>
+@{
     ViewData["Title"] = "Index Test";
+    var edades = ViewData["edades"] as List<Edad>;
 }
 
 <h2>@ViewData["Title"]</h2>
 <p>Hello from our View Template!</p>
+
+<!-- PRACTICING FAMILYTREEJS -->
+<!--  Give it an id and set a specific width and height which will be the width and height of your Family Tree JS. -->
+<div style="width:100%; height:700px;" id="tree" />
+
+@section Scripts{
+    <script>
+    var model = @Html.Raw(Json.Serialize(Model));
+    var edades = @Html.Raw(Json.Serialize(edades));
+
+    FamilyTree.SEARCH_PLACEHOLDER = "Buscar Sim...";
+    var family = new FamilyTree(document.getElementById("tree"), {
+        template:"john",
+
+        nodeBinding: {
+            field_0: "nombre"
+        },
+        
+        editForm: {
+            generateElementsFromFields: false,
+            elements: [
+                { type: 'textbox', label: 'Nombre', binding: 'nombre' },
+                { type: 'textbox', label: 'Apellido', binding: 'apellido' },
+                { type: 'select', options: [
+                        { value: true, text: 'Mujer' },
+                        { value: false, text: 'Hombre' }],
+                    label: 'Sexo', binding: 'isMujer'
+                },   
+                { type: 'select', options:edades, label:'Edad', binding:'edad'},
+                { type: 'select', options: [
+                        { value: false, text: 'Vivo' },
+                        { value: true, text: 'Fallecido' }],
+                    label: 'Estado', binding: 'isMuerto'
+                }
+            ],
+            addMore: null,
+            addMoreBtn: null,
+            addMoreFieldName: null,
+        },
+
+        
+        
+        nodes: [
+            { id: 1, pids: [2], nombre: "Amber", apellido:"McKenzie", gender:"female" },
+            { id: 2, pids: [1], name: "Ava Field", gender:"male" },
+            { id: 3, mid: 1, fid: 2, name: "Peter Stevens", gender:"male" }
+        ]
+    });
+        
+        alert('Hello from the view model: ',model);
+
+    </script>
+} 

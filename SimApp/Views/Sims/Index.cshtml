@@ -9,48 +9,79 @@
 <hr />
 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
     <a role="button" class="btn btn-primary" asp-action="Create"><i class="bi bi-person-plus-fill"></i> Añadir Sim</a>
+    <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#crearSim"><i class="bi bi-person-plus-fill"></i>  Añadir Sim</button>
 </div>
-<table class="table table-hover">
+<div class="table-responsive">
+    <table class="table table-hover">
 
-    <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Nombre</th>
-            <th scope="col">Apellido</th>
-            <th scope="col">Sexo</th>
-            <th scope="col">Edad</th>
-            <th scope="col">Estado</th>
-            <th scope="col"></th>
-        </tr>
-    </thead>
-
-    <tbody>
-        @foreach (var sim in Model)
-        {
-            <tr class="@(sim.IsMuerto?"table-secondary":"")">
-                <th scope="row">
-                    @Html.DisplayFor(modelItem => sim.Id)
-                </th>
-                <td>
-                    @Html.DisplayFor(modelItem => sim.Nombre)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => sim.Apellido)
-                </td>
-                <td>
-                    @(sim.IsMujer ? "Mujer" : "Hombre")
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => sim.Edad)
-                </td>
-                <td>
-                    @(sim.IsMuerto ? "Fallecido" : "Vivo")
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@sim.Id">Editar</a> |
-                    <a asp-action="Delete" asp-route-id="@sim.Id">Eliminar</a>
-                </td>
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Apellido</th>
+                <th scope="col">Sexo</th>
+                <th scope="col">Edad</th>
+                <th scope="col">Estado</th>
+                <th scope="col"></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+
+        <tbody>
+            @foreach (var sim in Model)
+            {
+                <tr class="@(sim.IsMuerto?"table-secondary":"")">
+                    <th scope="row">
+                        @Html.DisplayFor(modelItem => sim.Id)
+                    </th>
+                    <td>
+                        @Html.DisplayFor(modelItem => sim.Nombre)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => sim.Apellido)
+                    </td>
+                    <td>
+                        @(sim.IsMujer ? "Mujer" : "Hombre")
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => sim.Edad)
+                    </td>
+                    <td>
+                        @(sim.IsMuerto ? "Fallecido" : "Vivo")
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@sim.Id">Editar</a> |
+                        <a asp-action="Delete" asp-route-id="@sim.Id">Eliminar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@await Html.PartialAsync(
+    "~/Views/Sims/_CrearModalPartialView.cshtml",
+    new SimRequestModel()
+    {
+        IsMujer = true,
+        Edad = "Joven",
+        IsMuerto = false
+    }
+)
+
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+
+        const myModal = document.getElementById('crearSim')
+
+        myModal.addEventListener('hidden.bs.modal', function(){
+            $('#crearSim').find('form').trigger('reset');
+            if ($("#Nombre-error").length) $("#Nombre-error").remove()
+            if ($("#Apellido-error").length) $("#Apellido-error").remove()
+        })
+
+    </script>
+}

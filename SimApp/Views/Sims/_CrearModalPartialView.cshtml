@@ -1,0 +1,75 @@
+﻿@model SimRequestModel
+
+@{
+    var edades = ViewData["edades"] as List<string>;
+}
+
+<div class="modal fade" id="crearSim" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Añadir Nuevo Sim</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form asp-action="Create" id="createForm">
+
+                <div class="modal-body">
+                    
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="Nombre" class="form-label"></label>
+                        <input asp-for="Nombre" class="form-control" autocomplete="off"/>
+                        <span asp-validation-for="Nombre" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Apellido" class="form-label"></label>
+                        <input asp-for="Apellido" class="form-control" autocomplete="off"/>
+                        <span asp-validation-for="Apellido" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="IsMujer" class="form-label"></label>
+                        <div class="form-check">
+                            @Html.RadioButtonFor(m => m.IsMujer,true,new{@class="form-check-input"})
+                            <label class="form-check-label">Mujer</label>
+                        </div>
+                        <div class="form-check">
+                            @Html.RadioButtonFor(m => m.IsMujer,false,new{@class="form-check-input"})
+                            <label class="form-check-label">Hombre</label>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Edad" class="form-label"></label>
+                        <select asp-items="@(new SelectList(edades))" asp-for="Edad" class="form-select"></select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="IsMuerto" class="form-label"></label>
+                        <div class="form-check">
+                            @Html.RadioButtonFor(m => m.IsMuerto,false,new{@class="form-check-input"})
+                            <label class="form-check-label">Vivo</label>
+                        </div>
+                        <div class="form-check">
+                            @Html.RadioButtonFor(m => m.IsMuerto,true,new{@class="form-check-input"})
+                            <label class="form-check-label">Fallecido</label>
+                        </div>
+                    </div>
+                    @*
+                    <div class="mb-3">
+                        <input type="submit" value="Crear" class="btn btn-primary" />
+                    </div>
+                    *@
+        
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <input type="submit" value="Crear" class="btn btn-primary"></input>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

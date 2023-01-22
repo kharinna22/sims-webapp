@@ -24,6 +24,7 @@ namespace SimApp.Controllers
         public async Task<IActionResult> Index()
         {
             List<SimModel> simsList = new List<SimModel>();
+            ViewData["edades"] = edades;
 
             using (var client = new HttpClient())
             {
@@ -84,6 +85,7 @@ namespace SimApp.Controllers
                 }
             }
 
+            //return RedirectToAction(nameof(Index));
             return View(newSim);
         }
 
@@ -206,6 +208,19 @@ namespace SimApp.Controllers
             }
 
             return View(sim);
+        }
+
+        public ActionResult Crear()
+        {
+            // Valores predeterminados (bias propio)
+            SimRequestModel newSim = new SimRequestModel()
+            {
+                IsMujer = true,
+                Edad = "Joven",
+                IsMuerto = false
+            };
+
+            return PartialView("_CrearModalPartialView",newSim);
         }
 
 
